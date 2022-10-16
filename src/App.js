@@ -1,8 +1,8 @@
-import { useReducer } from "react";
+import {useReducer} from "react";
 import DigitButton from "./DigitButton";
 import OperationButton from "./OperationButton";
 
-function calculatorReducer(state, { type, payload }) {
+function calculatorReducer(state, {type, payload}) {
   switch (type) {
     case "ADD_DIGIT":
       if (state.overWrite) {
@@ -15,8 +15,7 @@ function calculatorReducer(state, { type, payload }) {
       }
 
       if (state.currentOutput === "0" && payload.digit === "0") return state;
-      if (payload.digit === "." && state.currentOutput.includes("."))
-        return state;
+      if (payload.digit === "." && state.currentOutput.includes(".")) return state;
       return {
         ...state,
         currentOutput: `${state.currentOutput || ""}${payload.digit}`,
@@ -87,7 +86,7 @@ function calculatorReducer(state, { type, payload }) {
   }
 }
 
-function evaluate({ currentOutput, previousOutput, operation }) {
+function evaluate({currentOutput, previousOutput, operation}) {
   const prev = parseFloat(previousOutput);
   const curr = parseFloat(currentOutput);
   if (isNaN(prev) || isNaN(curr)) return "";
@@ -105,6 +104,9 @@ function evaluate({ currentOutput, previousOutput, operation }) {
     case "÷":
       result = prev / curr;
       break;
+
+    default:
+      return;
   }
   return result.toString();
 }
@@ -121,7 +123,7 @@ function formatOutput(output) {
 }
 
 function App() {
-  const [{ currentOutput, previousOutput, operation }, dispatch] = useReducer(
+  const [{currentOutput, previousOutput, operation}, dispatch] = useReducer(
     calculatorReducer,
     {}
   );
@@ -134,10 +136,10 @@ function App() {
         </div>
         <div className="current-output">{formatOutput(currentOutput)}</div>
       </div>
-      <button className="span-two" onClick={() => dispatch({ type: "CLEAR" })}>
+      <button className="span-two" onClick={() => dispatch({type: "CLEAR"})}>
         AC
       </button>
-      <button onClick={() => dispatch({ type: "DELETE_DIGIT" })}>DEL</button>
+      <button onClick={() => dispatch({type: "DELETE_DIGIT"})}>DEL</button>
       <OperationButton operation="÷" dispatch={dispatch}></OperationButton>
       <DigitButton digit="1" dispatch={dispatch}></DigitButton>
       <DigitButton digit="2" dispatch={dispatch}></DigitButton>
@@ -155,7 +157,7 @@ function App() {
       <DigitButton digit="0" dispatch={dispatch}></DigitButton>
       <button
         className="span-two"
-        onClick={() => dispatch({ type: "CALCULATE", payload: { operation } })}
+        onClick={() => dispatch({type: "CALCULATE", payload: {operation}})}
       >
         =
       </button>
